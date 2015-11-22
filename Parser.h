@@ -10,18 +10,16 @@
 #include "Rule.h"
 #include "PathUtils.h"
 
-using namespace std;
-
 class Parser {
 public:
-    Parser(string fileName);
+    Parser(std::string fileName);
     virtual ~Parser();
 
-    map<string, Rule*> getRules();
-    const string getFirstRule();
+    std::map<std::string, Rule*> get_rules();
+    const std::string get_master_rule();
 private:
-    map<string, Rule*> rules;
-    string firstRule;
+    std::map<std::string, Rule*> rules;
+    std::string master_rule;
 };
 
 #endif //DISTRIBUTED_MAKEFILE_PARSER_H

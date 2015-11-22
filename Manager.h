@@ -9,14 +9,14 @@
 
 class Manager {
 public:
-    Manager(std::string firstRule, std::map<std::string, Rule*> dictionary);
+    Manager(std::string master_rule, std::map<std::string, Rule*> dictionary);
 
     void execute();
 private:
-    std::string firstRule;
+    std::string master_rule;
     std::map<std::string, Rule*> dictionary;
 
-    void executeRule(Rule* rule);
+    void execute_rule(Rule *rule);
 };
 
 

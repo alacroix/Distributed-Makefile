@@ -3,6 +3,6 @@
 
 #include <iostream>
 
-std::string getParentPath(const std::string str);
+std::string parent_path(const std::string str);
 
 #endif //DISTRIBUTED_MAKEFILE_PATHUTILS_H

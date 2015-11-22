@@ -24,22 +24,22 @@ void Rule::execute(std::map<std::string, Rule*> dictionary) {
     executed = true;
 }
 
-std::string Rule::getName() {
+std::string Rule::get_name() {
     return this->name;
 }
 
-std::vector<std::string> Rule::getCmd() {
+std::vector<std::string> Rule::get_cmd() {
     return this->cmd;
 }
 
-std::vector<std::string> Rule::getDependencies() {
+std::vector<std::string> Rule::get_dependencies() {
     return this->dependencies;
 }
 
-bool Rule::hasDependencies() {
+bool Rule::has_dependencies() {
     return (this->dependencies.size() != 0);
 }
 
-bool Rule::hasBeenExecuted() {
+bool Rule::has_been_executed() {
     return executed;
 }

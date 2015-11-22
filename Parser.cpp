@@ -1,15 +1,15 @@
 #include "Parser.h"
 
-Parser::Parser(string fileName) {
+Parser::Parser(std::string fileName) {
     // I/O variables
-    string line;
-    ifstream myfile;
+    std::string line;
+    std::ifstream myfile;
 
     // Open file
     myfile.open((char*) fileName.c_str());
 
-    // Get parent path
-    chdir(getParentPath(fileName).c_str());
+    // Switch to parent path
+    chdir(parent_path(fileName).c_str());
 
     if (myfile.is_open()) {
         while (getline(myfile, line)) {
@@ -20,11 +20,11 @@ Parser::Parser(string fileName) {
             }
 
             // Rule attributes
-            string name;
-            vector<string> dependencies;
-            vector<string> commands;
+            std::string name;
+            std::vector<std::string> dependencies;
+            std::vector<std::string> commands;
 
-            vector<string> tokens;
+            std::vector<std::string> tokens;
 
             // Store name and dependencies
             boost::split(tokens, line, boost::is_any_of(" :"));
@@ -61,8 +61,8 @@ Parser::Parser(string fileName) {
             }
 
             // If it's the first rule encountered
-            if (firstRule == "") {
-                firstRule = name;
+            if (master_rule == "") {
+                master_rule = name;
             }
 
             // Store the new rule in the rules map
@@ -72,20 +72,23 @@ Parser::Parser(string fileName) {
         // Parsing done, closing file
         myfile.close();
     } else {
-        cout << "Unable to open file";
+        // Parsing done, closing file
+        myfile.close();
+
+        throw std::runtime_error("Could not open file");
     }
 }
 
 Parser::~Parser() {
-    for (map<string,Rule*>::iterator it = rules.begin(); it != rules.end(); ++it) {
+    for (std::map<std::string,Rule*>::iterator it = rules.begin(); it != rules.end(); ++it) {
         delete it->second;
     }
 }
 
-map<string, Rule*> Parser::getRules() {
+std::map<std::string, Rule*> Parser::get_rules() {
     return rules;
 }
 
-const string Parser::getFirstRule() {
-    return firstRule;
+const std::string Parser::get_master_rule() {
+    return master_rule;
 }

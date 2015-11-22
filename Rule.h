@@ -12,12 +12,12 @@ public:
 
     void execute(std::map<std::string, Rule*> dictionary);
 
-    std::string getName();
-    std::vector<std::string> getCmd();
-    std::vector<std::string> getDependencies();
+    std::string get_name();
+    std::vector<std::string> get_cmd();
+    std::vector<std::string> get_dependencies();
 
-    bool hasDependencies();
-    bool hasBeenExecuted();
+    bool has_dependencies();
+    bool has_been_executed();
 private:
     std::string name;
     std::vector<std::string> cmd;
