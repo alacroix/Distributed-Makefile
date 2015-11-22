@@ -15,5 +15,5 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/out")
 
-set(SOURCE_FILES main.cpp Rule.cpp Rule.h Parser.cpp Parser.h)
+set(SOURCE_FILES main.cpp Rule.cpp Rule.h Parser.cpp Parser.h Manager.cpp Manager.h PathUtils.cpp PathUtils.h)
 add_executable(distributed_makefile ${SOURCE_FILES})
