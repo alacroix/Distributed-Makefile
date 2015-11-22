@@ -1,9 +1,7 @@
 #include "Manager.h"
 
-Manager::Manager(std::string master_rule, std::map<std::string, Rule *> dictionary) {
-    this->master_rule = master_rule;
-    this->dictionary = dictionary;
-}
+Manager::Manager(std::string master_rule, std::map<std::string, Rule *> dictionary) :
+        master_rule(master_rule), dictionary(dictionary) {}
 
 void Manager::execute() {
     // Get initial rule

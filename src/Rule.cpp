@@ -1,11 +1,7 @@
 #include "Rule.h"
 
-Rule::Rule(std::string name, std::vector<std::string> cmd, std::vector<std::string> dependencies) {
-    this->name = name;
-    this->cmd = cmd;
-    this->dependencies = dependencies;
-    executed = false;
-}
+Rule::Rule(std::string name, std::vector<std::string> cmd, std::vector<std::string> dependencies) :
+        name(name), cmd(cmd), dependencies(dependencies), executed(false) {}
 
 void Rule::execute(std::map<std::string, Rule*> dictionary) {
     for(std::vector<int>::size_type i = 0; i != cmd.size(); i++) {
