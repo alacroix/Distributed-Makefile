@@ -18,7 +18,7 @@ void Manager::execute_rule(Rule *rule) {
         std::vector<std::string> dependencies = rule->get_dependencies();
 
         for(std::vector<int>::size_type i = 0; i != dependencies.size(); i++) {
-            // If dependency is a simple file like a .c
+            // If dependency is a simple file like a .c (ie not a rule)
             if (dictionary.find(dependencies.at(i)) == dictionary.end()) {
                 // TODO: Check if file exists
             } else {
