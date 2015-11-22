@@ -1,8 +1,12 @@
 #include <iostream>
 
+#include "Parser.h"
+
 using namespace std;
 
 int main() {
-    cout << "Hello, World!" << endl;
+    Parser p("../makefiles/premier/Makefile");
+    p.printAllRules();
+    std::cout << "First rule : " << p.getFirstRule() << std::endl;
     return 0;
 }
