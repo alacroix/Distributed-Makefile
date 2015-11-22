@@ -1,6 +1,8 @@
 #include "Parser.h"
 
-Parser::Parser(std::string fileName) {
+Parser::Parser(std::string fileName) : Parser(fileName, "") {}
+
+Parser::Parser(std::string fileName, std::string master_rule) : master_rule(master_rule) {
     // I/O variables
     std::string line;
     std::ifstream myfile;

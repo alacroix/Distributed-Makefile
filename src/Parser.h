@@ -13,6 +13,7 @@
 class Parser {
 public:
     Parser(std::string fileName);
+    Parser(std::string fileName, std::string master_rule);
     virtual ~Parser();
 
     std::map<std::string, Rule*> get_rules();
