@@ -17,7 +17,7 @@ Parser::Parser(std::string fileName, std::string master_rule) : master_rule(mast
         while (getline(myfile, line)) {
             //To skip blank lines
             boost::trim(line);
-            if (line == "") {
+            if (line.compare("") == 0) {
                 continue;
             }
 
@@ -36,7 +36,7 @@ Parser::Parser(std::string fileName, std::string master_rule) : master_rule(mast
                     name = tokens[i];
                 } else {
                     // If rule has dependencies
-                    if (tokens[i] != "") {
+                    if (tokens[i].compare("") != 0) {
                         dependencies.push_back(tokens[i]);
                     }
                 }
@@ -49,10 +49,10 @@ Parser::Parser(std::string fileName, std::string master_rule) : master_rule(mast
                 boost::split(tokens, line, boost::is_any_of("\n;"));
                 for (size_t i = 0; i < tokens.size(); i++) {
                     boost::trim(tokens[i]);
-                    if (tokens[i] == "\\") {
+                    if (tokens[i].compare("\\") == 0) {
                         goNextLine = true;
                     } else {
-                        if (tokens[i] != "") {
+                        if (tokens[i].compare("") != 0) {
                             commands.push_back(tokens[i]);
                         }
                     }
@@ -63,8 +63,8 @@ Parser::Parser(std::string fileName, std::string master_rule) : master_rule(mast
             }
 
             // If it's the first rule encountered
-            if (master_rule == "") {
-                master_rule = name;
+            if (this->master_rule.compare("") == 0) {
+                this->master_rule = name;
             }
 
             // Store the new rule in the rules map
