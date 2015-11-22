@@ -1,12 +1,15 @@
 #include <iostream>
 
 #include "Parser.h"
+#include "Manager.h"
 
 using namespace std;
 
-int main() {
-    Parser p("../makefiles/premier/Makefile");
-    p.printAllRules();
-    std::cout << "First rule : " << p.getFirstRule() << std::endl;
+int main(int argc, char **argv) {
+    Parser p("../makefiles/premier/Makefile-small");
+
+    Manager m(p.getFirstRule(), p.getRules());
+    m.execute();
+
     return 0;
 }
