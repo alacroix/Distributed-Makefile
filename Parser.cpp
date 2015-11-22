@@ -8,6 +8,9 @@ Parser::Parser(string fileName) {
     // Open file
     myfile.open((char*) fileName.c_str());
 
+    // Get parent path
+    chdir(getParentPath(fileName).c_str());
+
     if (myfile.is_open()) {
         while (getline(myfile, line)) {
             //To skip blank lines

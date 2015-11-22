@@ -8,6 +8,7 @@
 #include <boost/algorithm/string.hpp>
 
 #include "Rule.h"
+#include "PathUtils.h"
 
 using namespace std;
 
