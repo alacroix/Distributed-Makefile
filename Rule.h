@@ -10,7 +10,6 @@ class Rule {
 public:
     Rule(std::string name, std::vector<std::string> cmd, std::vector<std::string> dependencies);
 
-    void printRule();
     void execute(std::map<std::string, Rule*> dictionary);
 
     std::string getName();

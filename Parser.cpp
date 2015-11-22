@@ -89,9 +89,3 @@ map<string, Rule*> Parser::getRules() {
 const string Parser::getFirstRule() {
     return firstRule;
 }
-
-void Parser::printAllRules() {
-    for (map<string,Rule*>::iterator it = rules.begin(); it != rules.end(); ++it) {
-        it->second->printRule();
-    }
-}

@@ -7,21 +7,6 @@ Rule::Rule(std::string name, std::vector<std::string> cmd, std::vector<std::stri
     executed = false;
 }
 
-void Rule::printRule() {
-    // Name
-    std::cout << "Name = " << this->name << std::endl;
-    // Dependencies
-    std::cout << "Dependencies : " << std::endl;
-    for(std::vector<int>::size_type i = 0; i != dependencies.size(); i++) {
-        std::cout << dependencies.at(i) << std::endl;
-    }
-    // Commands
-    std::cout << "Commands : " << std::endl;
-    for(std::vector<int>::size_type i = 0; i != cmd.size(); i++) {
-        std::cout << cmd.at(i) << std::endl;
-    }
-}
-
 void Rule::execute(std::map<std::string, Rule*> dictionary) {
     for(std::vector<int>::size_type i = 0; i != cmd.size(); i++) {
         std::string exec = cmd.at(i).substr(0, cmd.at(i).find(' '));

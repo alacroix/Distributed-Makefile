@@ -19,7 +19,6 @@ public:
 
     map<string, Rule*> getRules();
     const string getFirstRule();
-    void printAllRules();
 private:
     map<string, Rule*> rules;
     string firstRule;
