@@ -6,6 +6,8 @@
 #include <map>
 #include <sstream>
 
+#include "PathUtils.h"
+
 class Rule {
 public:
     Rule(std::string name, std::vector<std::string> cmd, std::vector<std::string> dependencies);
@@ -18,6 +20,7 @@ public:
 
     bool has_dependencies();
     bool has_been_executed();
+    bool alreadyExists();
 private:
     std::string name;
     std::vector<std::string> cmd;

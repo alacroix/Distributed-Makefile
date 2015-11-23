@@ -5,4 +5,6 @@
 
 std::string parent_path(const std::string str);
 
+bool file_exists(const std::string str);
+
 #endif //DISTRIBUTED_MAKEFILE_PATHUTILS_H

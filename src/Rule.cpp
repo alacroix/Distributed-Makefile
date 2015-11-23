@@ -39,3 +39,7 @@ bool Rule::has_dependencies() {
 bool Rule::has_been_executed() {
     return executed;
 }
+
+bool Rule::alreadyExists() {
+    return file_exists(name);
+}

@@ -5,6 +5,7 @@
 #include <map>
 
 #include "Rule.h"
+#include "PathUtils.h"
 
 
 class Manager {
