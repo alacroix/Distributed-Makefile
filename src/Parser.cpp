@@ -17,7 +17,7 @@ Parser::Parser(std::string fileName, std::string master_rule) : master_rule(mast
         while (getline(myfile, line)) {
             //To skip blank lines
             boost::trim(line);
-            if (line.compare("") == 0) {
+            if (line.compare("") == 0 || line.at(0) == '#') {
                 continue;
             }
 
