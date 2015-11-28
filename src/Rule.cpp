@@ -7,8 +7,8 @@ void Rule::execute(std::map<std::string, Rule*> dictionary) {
     for(std::vector<int>::size_type i = 0; i != cmd.size(); i++) {
         std::string exec = cmd.at(i).substr(0, cmd.at(i).find(' '));
 
-        // If it's a local rule, add ./
-        if (dictionary.find(exec) != dictionary.end()) {
+        // If it's a local rule or existing file, add ./
+        if (dictionary.find(exec) != dictionary.end() || file_exists(exec)) {
             std::stringstream ss;
             ss << "./" << cmd.at(i).c_str();
             system(ss.str().c_str());
