@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <map>
+#include <omp.h>
 
 #include "Rule.h"
 #include "PathUtils.h"

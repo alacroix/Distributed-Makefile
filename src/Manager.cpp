@@ -1,4 +1,3 @@
-#include <omp.h>
 #include "Manager.h"
 
 Manager::Manager(std::string master_rule, std::map<std::string, Rule *> dictionary) :
@@ -14,6 +13,7 @@ void Manager::execute() {
 void Manager::execute_rule(Rule *rule) {
     // If file already exists, do nothing
     if (rule->alreadyExists()) {
+#pragma omp critical
         std::cout << rule->get_name() << " already exists." << std::endl;
         return;
     }
