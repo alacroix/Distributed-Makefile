@@ -16,7 +16,6 @@ void Rule::execute(std::map<std::string, Rule*> dictionary) {
             system(cmd.at(i).c_str());
         }
     }
-
     executed = true;
 }
 

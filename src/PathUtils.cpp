@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "PathUtils.h"
 
 std::string parent_path(const std::string str) {

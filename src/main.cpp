@@ -1,9 +1,14 @@
 #include <iostream>
+#include <omp.h>
 
 #include "Parser.h"
 #include "Manager.h"
 
 int main(int argc, char **argv) {
+
+    omp_set_dynamic(1);
+    double startT = omp_get_wtime();
+
     // Check args number
     if (argc < 2 || argc > 3) {
         std::cerr << "usage: distributed_makefile <makefile> [target]" << std::endl;
@@ -21,6 +26,8 @@ int main(int argc, char **argv) {
     m.execute();
 
     delete p;
+
+    std::cout << "Time : " << (omp_get_wtime() - startT) << std::endl;
 
     return 0;
 }
