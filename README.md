@@ -1,4 +1,4 @@
 # distributed-makefile
 Distributed Makefile with MPI + OpenMP
 
-Extra external libraries used : Boost > 1.57.0
+Extra external libraries used : Boost, OpenMP, MPI
