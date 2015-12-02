@@ -64,3 +64,6 @@ list20.txt: premier
 premier: premier.c
     gcc -o premier premier.c -lm
 
+clean:
+    rm -f list* premier
+
