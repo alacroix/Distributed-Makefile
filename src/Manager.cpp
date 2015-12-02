@@ -48,7 +48,6 @@ void Manager::execute_rule(Rule *rule) {
 					}
 				}
 			}
-			#pragma omp barrier
 		}
 	}
 
