@@ -343,3 +343,5 @@ frame_113.png : cube_anim.blend
 cube_anim.blend : 
 		rm cube_anim.blend ; unzip cube_anim.zip
 
+clean:
+    rm -f frame_* cube.mpg
