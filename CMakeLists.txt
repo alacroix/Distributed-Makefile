@@ -8,7 +8,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/out")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # Source files & exec
-set(SOURCE_FILES src/main.cpp src/Rule.cpp src/Rule.h src/Parser.cpp src/Parser.h src/Manager.cpp src/Manager.h src/PathUtils.cpp src/PathUtils.h)
+set(SOURCE_FILES src/main.cpp src/Rule.cpp src/Rule.h src/Parser.cpp src/Parser.h src/Manager.cpp src/Manager.h src/PathUtils.cpp src/PathUtils.h src/QueueDoable.cpp src/QueueDoable.h)
 add_executable(distributed_makefile ${SOURCE_FILES})
 
 # Packages

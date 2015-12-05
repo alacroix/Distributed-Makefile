@@ -8,17 +8,18 @@
 
 #include "Rule.h"
 #include "PathUtils.h"
-
+#include "QueueDoable.h"
 
 class Manager {
 public:
-    Manager(std::string master_rule, std::map<std::string, Rule*> dictionary, std::set<std::string> fileFaisable);
+    Manager(std::string master_rule, std::map<std::string, Rule*> dictionary, QueueDoable *queueDoable, int nbrRules);
 
     void execute();
 private:
     std::string master_rule;
     std::map<std::string, Rule*> dictionary;
-    std::set<std::string> fileFaisable;
+    QueueDoable *queueDoable;
+    int nbrRules;
 
     void execute_rule(Rule *rule);
 };

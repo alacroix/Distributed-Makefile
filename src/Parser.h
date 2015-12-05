@@ -7,28 +7,33 @@
 #include <map>
 #include <iterator>
 #include <set>
+#include <queue>
 #include <boost/algorithm/string.hpp>
 
 #include "Rule.h"
 #include "PathUtils.h"
+#include "QueueDoable.h"
 
 class Parser {
 public:
-    Parser(std::string fileName);
-    Parser(std::string fileName, std::string master_rule);
+    Parser(QueueDoable *queueDoable, std::string fileName);
+    Parser(QueueDoable *queueDoable, std::string fileName, std::string master_rule);
     virtual ~Parser();
+
+    void addDoable(std::string const & nomFile);
 
     std::map<std::string, Rule*> get_rules();
     const std::string get_master_rule();
-    std::set<std::string> getFileFaisable();
+    const int getNumberDoable();
 
 private:
     void redecoreDico(std::string nom, std::string pere);
-    void printFileFaisable();
+
+    QueueDoable *queueDoable;
 
     std::map<std::string, Rule*> rules;
-    std::set<std::string> fileFaisable;
     std::string master_rule;
+    int numberDoable;
 
 };
 

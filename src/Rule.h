@@ -26,6 +26,7 @@ public:
     void printRule();
 
     bool have_childs();
+    bool toExecute;
     bool has_dependencies();
     bool has_been_executed();
     bool alreadyExists();

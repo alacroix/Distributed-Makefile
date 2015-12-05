@@ -2,9 +2,9 @@
 #include <iterator>
 #include <set>
 
-Parser::Parser(std::string fileName) : Parser(fileName, "") {}
+Parser::Parser(QueueDoable *queueDoable, std::string fileName) : Parser(queueDoable, fileName, "") {}
 
-Parser::Parser(std::string fileName, std::string master_rule) : master_rule(master_rule) {
+Parser::Parser(QueueDoable *queueDoable, std::string fileName, std::string master_rule) : queueDoable(queueDoable), master_rule(master_rule), numberDoable(1) {
     // I/O variables
     std::string line;
     std::ifstream myfile;
@@ -78,22 +78,11 @@ Parser::Parser(std::string fileName, std::string master_rule) : master_rule(mast
 
         std::string pere; //empty par defaut
         redecoreDico(this->master_rule, pere);
-
-        //printFileFaisable();
-
     } else {
         // Parsing done, closing file
         myfile.close();
 
         throw std::runtime_error("Could not open file");
-    }
-}
-
-void Parser::printFileFaisable() {
-    std::set<std::string>::iterator it;
-    for (it = fileFaisable.begin(); it != fileFaisable.end(); ++it)
-    {
-        std::cout << *it << std::endl;
     }
 }
 
@@ -105,6 +94,13 @@ void Parser::redecoreDico(std::string nom, std::string pere) {
         return;
     }
     if (!pere.empty()) {
+
+        if (!myRule->toExecute) {
+            std::cout << myRule->get_name() << std::endl;
+            //Incrementation du nombre de rule à executer
+            numberDoable++;
+            myRule->toExecute = true;
+        }
         //Le noeud ajoute son pere
         myRule->addParent(pere);
         //Le pere ajoute se noeud en tant que fils
@@ -125,7 +121,7 @@ void Parser::redecoreDico(std::string nom, std::string pere) {
         }
     }
     if (!aUnfilsRegle) { //Pas de fils on l'ajoute à la file des faisables
-        fileFaisable.insert(nom);
+        queueDoable->pushDoable(nom);
     }
 }
 
@@ -143,6 +139,6 @@ const std::string Parser::get_master_rule() {
     return master_rule;
 }
 
-std::set<std::string> Parser::getFileFaisable() {
-    return fileFaisable;
+const int Parser::getNumberDoable() {
+    return numberDoable;
 }

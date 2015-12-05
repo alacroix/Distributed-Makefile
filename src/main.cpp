@@ -4,10 +4,11 @@
 
 #include "Parser.h"
 #include "Manager.h"
+#include "QueueDoable.h"
 
 int main(int argc, char **argv) {
 
-    omp_set_dynamic(1);
+   // omp_set_dynamic(1);
     double startT = omp_get_wtime();
 
     // Check args number
@@ -16,11 +17,13 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
+    QueueDoable *queueDoable = new QueueDoable();
+
     Parser* p = NULL;
     if (argc == 2) {
-        p = new Parser(argv[1]);
+        p = new Parser(queueDoable, argv[1]);
     } else {
-        p = new Parser(argv[1], argv[2]);
+        p = new Parser(queueDoable, argv[1], argv[2]);
     }
 
     /*
@@ -33,7 +36,7 @@ int main(int argc, char **argv) {
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
     */
 
-    Manager m(p->get_master_rule(), p->get_rules(), p->getFileFaisable());
+    Manager m(p->get_master_rule(), p->get_rules(), queueDoable, p->getNumberDoable());
     m.execute();
 
     delete p;
