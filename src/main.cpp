@@ -1,5 +1,6 @@
 #include <iostream>
 #include <omp.h>
+//#include <mpi.h>
 
 #include "Parser.h"
 #include "Manager.h"
@@ -22,7 +23,17 @@ int main(int argc, char **argv) {
         p = new Parser(argv[1], argv[2]);
     }
 
-    Manager m(p->get_master_rule(), p->get_rules());
+    /*
+    // Initialize the MPI environment
+    MPI_Init(&argc, &argv);
+    // Find out rank, size
+    int world_rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+    int world_size;
+    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+    */
+
+    Manager m(p->get_master_rule(), p->get_rules(), p->getFileFaisable());
     m.execute();
 
     delete p;

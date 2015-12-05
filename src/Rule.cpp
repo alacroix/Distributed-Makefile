@@ -42,3 +42,44 @@ bool Rule::has_been_executed() {
 bool Rule::alreadyExists() {
     return file_exists(name);
 }
+
+void Rule::addParent(std::string pereName) {
+    //std::cout << name << " : Add pere : " << pereName << std::endl;
+    this->parents.push_back(pereName);
+}
+
+void Rule::addChild(std::string childName) {
+    //std::cout << name << " : Add child : " << childName << std::endl;
+    this->childs.push_back(childName);
+}
+
+std::vector<std::string> Rule::get_parents() {
+    return parents;
+}
+
+void Rule::removeChild(std::string childName) {
+    for( std::vector<std::string>::iterator iter = childs.begin(); iter != childs.end(); ++iter )
+    {
+        if(childName.compare(*iter) == 0)
+        {
+            childs.erase(iter);
+            break;
+        }
+    }
+}
+
+bool Rule::have_childs() {
+    //std::cout << "Nombre fils : " << childs.size() << std::endl;
+    return childs.size() != 0;
+}
+
+void Rule::printRule() {
+    for( std::vector<std::string>::iterator iter = childs.begin(); iter != childs.end(); ++iter )
+    {
+        std::cout << *iter << std::endl;
+    }
+    for( std::vector<std::string>::iterator iter = parents.begin(); iter != parents.end(); ++iter )
+    {
+        std::cout << *iter << std::endl;
+    }
+}

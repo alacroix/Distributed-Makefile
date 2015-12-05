@@ -1,4 +1,6 @@
 #include "Parser.h"
+#include <iterator>
+#include <set>
 
 Parser::Parser(std::string fileName) : Parser(fileName, "") {}
 
@@ -73,11 +75,57 @@ Parser::Parser(std::string fileName, std::string master_rule) : master_rule(mast
 
         // Parsing done, closing file
         myfile.close();
+
+        std::string pere; //empty par defaut
+        redecoreDico(this->master_rule, pere);
+
+        //printFileFaisable();
+
     } else {
         // Parsing done, closing file
         myfile.close();
 
         throw std::runtime_error("Could not open file");
+    }
+}
+
+void Parser::printFileFaisable() {
+    std::set<std::string>::iterator it;
+    for (it = fileFaisable.begin(); it != fileFaisable.end(); ++it)
+    {
+        std::cout << *it << std::endl;
+    }
+}
+
+void Parser::redecoreDico(std::string nom, std::string pere) {
+
+    //Ajouter son pere
+    Rule *myRule = this->get_rules()[nom];
+    if (myRule == NULL) {
+        return;
+    }
+    if (!pere.empty()) {
+        //Le noeud ajoute son pere
+        myRule->addParent(pere);
+        //Le pere ajoute se noeud en tant que fils
+        Rule *pereRule = this->get_rules()[pere];
+        pereRule->addChild(myRule->get_name());
+    }
+    //Appeler sur les fils
+    std::vector<std::string> dependencies = this->get_rules()[nom]->get_dependencies();
+
+    bool aUnfilsRegle = false;
+
+    for (std::vector<int>::size_type i = 0; i < dependencies.size(); i++) {
+        std::string nomFils = dependencies.at(i);
+        //Si ce fils est une regle, on decore cette regle
+        if (this->get_rules()[nomFils] != NULL) {
+            aUnfilsRegle = true;
+            redecoreDico(nomFils, nom);
+        }
+    }
+    if (!aUnfilsRegle) { //Pas de fils on l'ajoute à la file des faisables
+        fileFaisable.insert(nom);
     }
 }
 
@@ -93,4 +141,8 @@ std::map<std::string, Rule*> Parser::get_rules() {
 
 const std::string Parser::get_master_rule() {
     return master_rule;
+}
+
+std::set<std::string> Parser::getFileFaisable() {
+    return fileFaisable;
 }
