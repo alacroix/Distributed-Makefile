@@ -22,6 +22,18 @@ if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
 endif ()
 
+set(BOOST_ROOT "/usr/include")
+set(BOOST_LIBRARYDIR "/usr/lib/x86_64-linux-gnu")
+# Boost package
+#find_package(Boost COMPONENTS mpi serialization REQUIRED)
+#if(Boost_FOUND)
+#    message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
+#    message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
+#    message(STATUS "Boost_VERSION: ${Boost_VERSION}")
+#    include_directories(${Boost_INCLUDE_DIRS})
+#endif()
+
+find_package(Boost REQUIRED mpi serialization)
 
 # Detect MPI
 set(MPI_LIBS)
@@ -48,7 +60,7 @@ endif (OPENMP_FOUND)
 # Source files & exec
 set(SOURCE_FILES src/main.cpp src/Rule.cpp src/Rule.h src/Parser.cpp src/Parser.h src/Manager.cpp src/Manager.h src/PathUtils.cpp src/PathUtils.h src/QueueDoable.cpp src/QueueDoable.h)
 add_executable(distributed_makefile ${SOURCE_FILES})
-target_link_libraries(distributed_makefile ${MPI_LIBS})
+target_link_libraries(distributed_makefile ${Boost_LIBRARIES} ${MPI_LIBS})
 
 # Print compiler flags
 get_directory_property(DirDefs COMPILE_DEFINITIONS)

@@ -1,12 +1,17 @@
 #include <iostream>
 #include <omp.h>
-//#include <mpi.h>
+
+#include <boost/mpi/environment.hpp>
+#include <boost/mpi/communicator.hpp>
 
 #include "Parser.h"
 #include "Manager.h"
 #include "QueueDoable.h"
 
+namespace mpi = boost::mpi;
+
 int main(int argc, char **argv) {
+    /*
     // Initialize the MPI environment
     MPI_Init(&argc, &argv);
 
@@ -44,6 +49,12 @@ int main(int argc, char **argv) {
     }
 
     MPI_Finalize();
+     */
+
+    mpi::environment env;
+    mpi::communicator world;
+    std::cout << "source : " << mpi::environment::processor_name() << std::endl;
+    std::cout << "I am process " << world.rank() << " of " << world.size() << "." << std::endl;
 
     return 0;
 }
