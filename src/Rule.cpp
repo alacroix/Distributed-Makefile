@@ -1,5 +1,7 @@
 #include "Rule.h"
 
+Rule::Rule() : name("N/A") {}
+
 Rule::Rule(std::string name, std::vector<std::string> cmd, std::vector<std::string> dependencies) :
         name(name), cmd(cmd), dependencies(dependencies), executed(false), toExecute(false) {}
 

@@ -2,7 +2,9 @@
 #include <iterator>
 #include <set>
 
-Parser::Parser(QueueDoable *queueDoable, std::string fileName) : Parser(queueDoable, fileName, "") {}
+Parser::Parser(QueueDoable *queueDoable, std::string fileName) {
+    Parser(queueDoable, fileName, "all");
+}
 
 Parser::Parser(QueueDoable *queueDoable, std::string fileName, std::string master_rule) : queueDoable(queueDoable), master_rule(master_rule), numberDoable(1) {
     // I/O variables
@@ -65,7 +67,7 @@ Parser::Parser(QueueDoable *queueDoable, std::string fileName, std::string maste
             }
 
             // If it's the first rule encountered
-            if (this->master_rule.compare("") == 0) {
+            if (this->master_rule.empty()) {
                 this->master_rule = name;
             }
 
@@ -134,10 +136,6 @@ std::map<std::string, Rule*> Parser::get_rules() {
     return rules;
 }
 
-const std::string Parser::get_master_rule() {
+std::string Parser::get_master_rule() {
     return master_rule;
-}
-
-const int Parser::getNumberDoable() {
-    return numberDoable;
 }

@@ -7,12 +7,26 @@
 #include <stdlib.h>
 #include <sstream>
 
-#include <boost/mpi.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/vector.hpp>
 
 #include "PathUtils.h"
 
 class Rule {
+    friend class boost::serialization::access;
+
+    template<class Archive>
+    void serialize(Archive &ar, const unsigned int version) {
+        ar & name;
+        ar & cmd;
+        ar & dependencies;
+        ar & childs;
+        ar & parents;
+        ar & executed;
+    }
 public:
+    Rule();
+
     Rule(std::string name, std::vector<std::string> cmd, std::vector<std::string> dependencies);
 
     void execute(std::map<std::string, Rule*> dictionary);

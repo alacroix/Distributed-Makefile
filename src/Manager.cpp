@@ -1,17 +1,18 @@
 #include "Manager.h"
 
-Manager::Manager(std::string master_rule, std::map<std::string, Rule *> dictionary, QueueDoable *queueDoable,
-                 int nbrRules)
-        :
-        master_rule(master_rule), dictionary(dictionary), queueDoable(queueDoable), nbrRules(nbrRules) {
-    currentRank = 0;
+Manager::Manager() {}
 
-    create_building();
+Manager::Manager(std::string master_rule, std::map<std::string, Rule *> dictionary, QueueDoable *queueDoable) :
+        master_rule(master_rule), dictionary(dictionary), queueDoable(queueDoable), currentRank(0) {
+    //create_building();
 }
 
 std::string Manager::printCurrentThread() {
+    mpi::communicator world;
+
     std::stringstream ss;
-    ss << "Process: " << processor_name << " (" << (rank + 1) << "/" << numprocs << ") | " << "Thread " << omp_get_thread_num() + 1 << "/" << omp_get_num_threads() << " | ";
+    ss << "Process: " << (world.rank() + 1) << "/" << world.size() << " | " << "Thread " <<
+    omp_get_thread_num() + 1 << "/" << omp_get_num_threads() << " | ";
     return ss.str();
 }
 
@@ -48,9 +49,9 @@ void Manager::create_building() {
     }
 
     int i = 1;
-    for (std::vector<std::vector<Rule*> >::iterator it1 = building.begin(); it1 != building.end(); ++it1) {
+    for (std::vector<std::vector<Rule *> >::iterator it1 = building.begin(); it1 != building.end(); ++it1) {
         std::cout << "etage " << i << std::endl;
-        for (std::vector<Rule*>::iterator it2 = it1->begin(); it2 != it1->end(); ++it2) {
+        for (std::vector<Rule *>::iterator it2 = it1->begin(); it2 != it1->end(); ++it2) {
             std::cout << (*it2)->get_name() << "-";
         }
         std::cout << std::endl;
@@ -59,17 +60,13 @@ void Manager::create_building() {
 }
 
 void Manager::execute() {
-    // get MPI resources
-    MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    MPI_Get_processor_name(processor_name, &namelen);
-
+    mpi::communicator world;
     // for each floor
-    for (std::vector<std::vector<Rule*> >::iterator it1 = building.begin(); it1 != building.end(); ++it1) {
+    for (std::vector<std::vector<Rule *> >::iterator it1 = building.begin(); it1 != building.end(); ++it1) {
         // for each rule
-        for (std::vector<Rule*>::iterator it2 = it1->begin(); it2 != it1->end(); ++it2) {
+        for (std::vector<Rule *>::iterator it2 = it1->begin(); it2 != it1->end(); ++it2) {
             // execute rule if it's our turn
-            if (currentRank % numprocs == rank) {
+            if (currentRank % world.size() == world.rank()) {
                 std::cout << printCurrentThread() << "executing " << (*it2)->get_name() << std::endl;
                 (*it2)->execute(dictionary);
                 std::cout << printCurrentThread() << "finished " << (*it2)->get_name() << std::endl;
@@ -78,5 +75,17 @@ void Manager::execute() {
         }
         // wait all rules on the current floor to finish
         MPI_Barrier(MPI_COMM_WORLD);
+    }
+}
+
+void Manager::print() {
+    std::cout << dictionary.size() << std::endl;
+
+    typedef std::map<std::string, Rule*>::iterator it_type;
+    for(it_type iterator = dictionary.begin(); iterator != dictionary.end(); iterator++) {
+        std::cout << iterator->first << std::endl;
+        // iterator->first = key
+        // iterator->second = value
+        // Repeat if you also want to iterate through the second map.
     }
 }

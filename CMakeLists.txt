@@ -4,6 +4,9 @@ project(distributed_makefile)
 # C++ Version Flag
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
+# Output
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/out")
+
 # Prefix
 if (NOT PREFIX)
     set(PREFIX ${CMAKE_CURRENT_BINARY_DIR})
@@ -21,7 +24,6 @@ if (NOT CMAKE_BUILD_TYPE)
     message(STATUS "Setting build type to 'Debug' as none was specified.")
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
 endif ()
-
 
 # Detect MPI
 set(MPI_LIBS)
@@ -44,11 +46,19 @@ else (OPENMP_FOUND)
     message(STATUS "OpenMP not found.")
 endif (OPENMP_FOUND)
 
+# Detect Boost
+find_package(Boost REQUIRED mpi serialization)
+if (BOOST_FOUND)
+    message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
+    message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
+    message(STATUS "Boost_VERSION: ${Boost_VERSION}")
+    include_directories(${Boost_INCLUDE_DIRS})
+endif(BOOST_FOUND)
 
 # Source files & exec
 set(SOURCE_FILES src/main.cpp src/Rule.cpp src/Rule.h src/Parser.cpp src/Parser.h src/Manager.cpp src/Manager.h src/PathUtils.cpp src/PathUtils.h src/QueueDoable.cpp src/QueueDoable.h)
 add_executable(distributed_makefile ${SOURCE_FILES})
-target_link_libraries(distributed_makefile ${MPI_LIBS})
+target_link_libraries(distributed_makefile ${Boost_LIBRARIES} ${MPI_LIBS})
 
 # Print compiler flags
 get_directory_property(DirDefs COMPILE_DEFINITIONS)

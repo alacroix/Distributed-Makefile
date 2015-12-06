@@ -20,11 +20,8 @@ public:
     Parser(QueueDoable *queueDoable, std::string fileName, std::string master_rule);
     virtual ~Parser();
 
-    void addDoable(std::string const & nomFile);
-
     std::map<std::string, Rule*> get_rules();
-    const std::string get_master_rule();
-    const int getNumberDoable();
+    std::string get_master_rule();
 
 private:
     void redecoreDico(std::string nom, std::string pere);
