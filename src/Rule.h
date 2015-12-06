@@ -4,7 +4,10 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <stdlib.h>
 #include <sstream>
+
+#include <boost/mpi.hpp>
 
 #include "PathUtils.h"
 
@@ -22,10 +25,12 @@ public:
     void addParent(std::string pereName);
     void addChild(std::string childName);
     void removeChild(std::string childName);
+    void removeParent(std::string parentName);
 
     void printRule();
 
     bool have_childs();
+    bool have_parents();
     bool toExecute;
     bool has_dependencies();
     bool has_been_executed();

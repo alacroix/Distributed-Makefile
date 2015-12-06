@@ -96,14 +96,13 @@ void Parser::redecoreDico(std::string nom, std::string pere) {
     if (!pere.empty()) {
 
         if (!myRule->toExecute) {
-            std::cout << myRule->get_name() << std::endl;
             //Incrementation du nombre de rule à executer
             numberDoable++;
             myRule->toExecute = true;
         }
         //Le noeud ajoute son pere
         myRule->addParent(pere);
-        //Le pere ajoute se noeud en tant que fils
+        //Le pere ajoute ce noeud en tant que fils
         Rule *pereRule = this->get_rules()[pere];
         pereRule->addChild(myRule->get_name());
     }

@@ -68,9 +68,24 @@ void Rule::removeChild(std::string childName) {
     }
 }
 
+void Rule::removeParent(std::string parentName) {
+    for( std::vector<std::string>::iterator iter = parents.begin(); iter != parents.end(); ++iter )
+    {
+        if(parentName.compare(*iter) == 0)
+        {
+            parents.erase(iter);
+            break;
+        }
+    }
+}
+
 bool Rule::have_childs() {
     //std::cout << "Nombre fils : " << childs.size() << std::endl;
     return childs.size() != 0;
+}
+
+bool Rule::have_parents() {
+    return parents.size() != 0;
 }
 
 void Rule::printRule() {

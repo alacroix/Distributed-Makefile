@@ -5,6 +5,7 @@
 #include <map>
 #include <omp.h>
 #include <set>
+#include <mpi.h>
 
 #include "Rule.h"
 #include "PathUtils.h"
@@ -21,7 +22,15 @@ private:
     QueueDoable *queueDoable;
     int nbrRules;
 
-    void execute_rule(Rule *rule);
+    int currentRank;
+    int numprocs, rank, namelen;
+    char processor_name[MPI_MAX_PROCESSOR_NAME];
+
+    std::string printCurrentThread();
+
+    std::vector<std::vector<Rule *> > building;
+
+    void create_building();
 };
 
 
