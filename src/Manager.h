@@ -35,8 +35,6 @@ public:
 
     void execute();
     void create_building();
-
-    void print();
 private:
     std::string master_rule;
 

@@ -21,9 +21,10 @@ public:
     virtual ~Parser();
 
     std::map<std::string, Rule*> get_rules();
-    std::string get_master_rule();
+    const std::string get_master_rule();
 
 private:
+    void parseFile(std::string fileName);
     void redecoreDico(std::string nom, std::string pere);
 
     QueueDoable *queueDoable;

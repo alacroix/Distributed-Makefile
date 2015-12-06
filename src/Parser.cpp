@@ -2,11 +2,17 @@
 #include <iterator>
 #include <set>
 
-Parser::Parser(QueueDoable *queueDoable, std::string fileName) {
-    Parser(queueDoable, fileName, "all");
+Parser::Parser(QueueDoable *queueDoable, std::string fileName) :
+        queueDoable(queueDoable), master_rule(""), numberDoable(1) {
+    parseFile(fileName);
 }
 
-Parser::Parser(QueueDoable *queueDoable, std::string fileName, std::string master_rule) : queueDoable(queueDoable), master_rule(master_rule), numberDoable(1) {
+Parser::Parser(QueueDoable *queueDoable, std::string fileName, std::string master_rule) :
+        queueDoable(queueDoable), master_rule(master_rule), numberDoable(1) {
+    parseFile(fileName);
+}
+
+void Parser::parseFile(std::string fileName) {
     // I/O variables
     std::string line;
     std::ifstream myfile;
@@ -67,7 +73,7 @@ Parser::Parser(QueueDoable *queueDoable, std::string fileName, std::string maste
             }
 
             // If it's the first rule encountered
-            if (this->master_rule.empty()) {
+            if (this->master_rule.compare("") == 0) {
                 this->master_rule = name;
             }
 
@@ -91,7 +97,7 @@ Parser::Parser(QueueDoable *queueDoable, std::string fileName, std::string maste
 void Parser::redecoreDico(std::string nom, std::string pere) {
 
     //Ajouter son pere
-    Rule *myRule = this->get_rules()[nom];
+    Rule *myRule = rules[nom];
     if (myRule == NULL) {
         return;
     }
@@ -105,18 +111,18 @@ void Parser::redecoreDico(std::string nom, std::string pere) {
         //Le noeud ajoute son pere
         myRule->addParent(pere);
         //Le pere ajoute ce noeud en tant que fils
-        Rule *pereRule = this->get_rules()[pere];
+        Rule *pereRule = rules[pere];
         pereRule->addChild(myRule->get_name());
     }
     //Appeler sur les fils
-    std::vector<std::string> dependencies = this->get_rules()[nom]->get_dependencies();
+    std::vector<std::string> dependencies = rules[nom]->get_dependencies();
 
     bool aUnfilsRegle = false;
 
     for (std::vector<int>::size_type i = 0; i < dependencies.size(); i++) {
         std::string nomFils = dependencies.at(i);
         //Si ce fils est une regle, on decore cette regle
-        if (this->get_rules()[nomFils] != NULL) {
+        if (rules[nomFils] != NULL) {
             aUnfilsRegle = true;
             redecoreDico(nomFils, nom);
         }
@@ -136,6 +142,6 @@ std::map<std::string, Rule*> Parser::get_rules() {
     return rules;
 }
 
-std::string Parser::get_master_rule() {
+const std::string Parser::get_master_rule() {
     return master_rule;
 }

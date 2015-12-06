@@ -1,7 +1,3 @@
-//
-// Created by robin on 05/12/15.
-//
-
 #ifndef DISTRIBUTED_MAKEFILE_QUEUEDOABLE_H
 #define DISTRIBUTED_MAKEFILE_QUEUEDOABLE_H
 

@@ -1,7 +1,3 @@
-//
-// Created by robin on 05/12/15.
-//
-
 #include "QueueDoable.h"
 
 QueueDoable::QueueDoable() {}
@@ -9,8 +5,7 @@ QueueDoable::QueueDoable() {}
 void QueueDoable::printDoable() {
     std::cout << queueDoable.size() << std::endl;
     std::vector<std::string>::iterator it;
-    for (it = queueDoable.begin(); it != queueDoable.end(); ++it)
-    {
+    for (it = queueDoable.begin(); it != queueDoable.end(); ++it) {
         std::cout << *it << std::endl;
     }
 }

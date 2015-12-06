@@ -74,18 +74,6 @@ void Manager::execute() {
             currentRank++;
         }
         // wait all rules on the current floor to finish
-        MPI_Barrier(MPI_COMM_WORLD);
-    }
-}
-
-void Manager::print() {
-    std::cout << dictionary.size() << std::endl;
-
-    typedef std::map<std::string, Rule*>::iterator it_type;
-    for(it_type iterator = dictionary.begin(); iterator != dictionary.end(); iterator++) {
-        std::cout << iterator->first << std::endl;
-        // iterator->first = key
-        // iterator->second = value
-        // Repeat if you also want to iterate through the second map.
+        world.barrier();
     }
 }
