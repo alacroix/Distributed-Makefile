@@ -11,14 +11,7 @@
 namespace mpi = boost::mpi;
 
 int main(int argc, char **argv) {
-    /*
-    // Initialize the MPI environment
-    MPI_Init(&argc, &argv);
-
-    // Find out rank, size
-    int world_rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
-
+/*
     // timer
     double startT = omp_get_wtime();
 
@@ -27,6 +20,12 @@ int main(int argc, char **argv) {
         std::cerr << "usage: distributed_makefile <makefile> [target]" << std::endl;
         exit(1);
     }
+*/
+
+    mpi::environment env;
+    mpi::communicator world;
+    std::cout << "source : " << mpi::environment::processor_name() << std::endl;
+    std::cout << "I am process " << world.rank() << " of " << world.size() << "." << std::endl;
 
     QueueDoable *queueDoable = new QueueDoable();
 
@@ -39,22 +38,43 @@ int main(int argc, char **argv) {
 
     Manager m(p->get_master_rule(), p->get_rules(), queueDoable, p->getNumberDoable());
 
-    m.execute();
 
+    if (world.rank() != 0) {
+        m.execute();
+    }
     delete p;
 
+    /*
     // Show execution time
     if (world_rank == 0) {
         std::cout << "Time : " << (omp_get_wtime() - startT) << std::endl;
     }
 
     MPI_Finalize();
-     */
+*/
 
-    mpi::environment env;
-    mpi::communicator world;
-    std::cout << "source : " << mpi::environment::processor_name() << std::endl;
-    std::cout << "I am process " << world.rank() << " of " << world.size() << "." << std::endl;
+
+
+
+    if (world.rank() == 0) {
+        while (true) {
+            std::string message;
+            world.recv(mpi::any_source,0, message);
+            std::cout << "master recoit : " << message << std::endl;
+            std::vector<std::string> tokens;
+            boost::split(tokens, message, boost::is_any_of(";"));
+            //Faire le scp
+            int destinataire = atoi(tokens[0].c_str());
+            std::cout << "master envoit : OK à " << destinataire << std::endl;
+            std::string ok = "OK";
+            world.send(destinataire, 1, ok);
+        }
+
+    }/* else {
+        //Rule *rule = p->get_rules()[queueDoable->popDoable()];
+        //rule->execute(p->get_rules());
+/*    }
+*/
 
     return 0;
 }

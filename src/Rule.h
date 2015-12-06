@@ -8,8 +8,11 @@
 #include <sstream>
 
 #include <boost/mpi.hpp>
+#include <boost/mpi/communicator.hpp>
 
 #include "PathUtils.h"
+
+namespace mpi = boost::mpi;
 
 class Rule {
 public:
