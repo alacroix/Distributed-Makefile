@@ -24,17 +24,23 @@ void Rule::execute(std::map<std::string, Rule*> dictionary, std::string masterCo
         }
     }
 
-    for(std::vector<int>::size_type i = 0; i != cmd.size(); i++) {
+    #pragma omp for ordered
+    for(std::vector<int>::size_type i = 0; i < cmd.size(); i++) {
         std::string exec = cmd.at(i).substr(0, cmd.at(i).find(' '));
+
+        std::string toExec;
 
         // If it's a local rule or existing file, add ./
         if (dictionary.find(exec) != dictionary.end() || file_exists(exec)) {
             std::stringstream ss;
             ss << "./" << cmd.at(i).c_str();
-            system(ss.str().c_str());
+            toExec = ss.str();
         } else {
-            system(cmd.at(i).c_str());
+            toExec = cmd.at(i);
         }
+
+        #pragma omp ordered
+        system(toExec.c_str());
     }
     //Envoie de tous les fichiers
     std::stringstream commandSCP;
