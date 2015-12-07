@@ -5,7 +5,7 @@ Rule::Rule() : name("N/A") {}
 Rule::Rule(std::string name, std::vector<std::string> cmd, std::vector<std::string> dependencies) :
         name(name), cmd(cmd), dependencies(dependencies), executed(false), toExecute(false) {}
 
-void Rule::execute(std::map<std::string, Rule*> dictionary, std::string masterComputer) {
+void Rule::execute(std::map<std::string, Rule*> dictionary, std::string masterComputer, std::string cheminPere) {
     mpi::communicator world;
     //Parcours des dépendances pour demander les fichiers
     for(std::vector<int>::size_type i = 0; i != dependencies.size(); i++) {
@@ -44,7 +44,7 @@ void Rule::execute(std::map<std::string, Rule*> dictionary, std::string masterCo
     }
     //Envoie de tous les fichiers
     std::stringstream commandSCP;
-    commandSCP << "sshpass -p \"admin\" scp -o StrictHostKeyChecking=no " << get_name() << " " << masterComputer << ":~/distributed-makefile/test/premier/";
+    commandSCP << "sshpass -p \"admin\" scp -o StrictHostKeyChecking=no " << get_name() << " " << masterComputer << ":" << cheminPere;
     std::cout << commandSCP.str() << std::endl;
     system(commandSCP.str().c_str());
     //Suppression des fichiers

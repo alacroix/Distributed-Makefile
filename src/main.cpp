@@ -56,13 +56,18 @@ int main(int argc, char **argv) {
         m.create_building();
 
         broadcast(world, m, 0);
+        std::string cheminPere = get_absolutePath();
+        std::cout << cheminPere << std::endl;
+        broadcast(world, cheminPere, 0);
 
     } else {
         Manager m;
         broadcast(world, m, 0);
         std::stringstream adressMaster;
+        std::string cheminPere;
+        broadcast(world, cheminPere, 0);
         adressMaster << "root@" << hostnames[0];
-        m.execute(slaves, adressMaster.str().c_str());
+        m.execute(slaves, adressMaster.str().c_str(), cheminPere);
     }
 
     if (world.rank() == 0) {

@@ -61,7 +61,7 @@ void Manager::create_building() {
     */
 }
 
-void Manager::execute(mpi::communicator slave, std::string masterComputer) {
+void Manager::execute(mpi::communicator slave, std::string masterComputer, std::string cheminPere) {
     mpi::communicator world;
 
     // for each floor
@@ -71,7 +71,7 @@ void Manager::execute(mpi::communicator slave, std::string masterComputer) {
             // execute rule if it's our turn
             if ((currentRank % (world.size()-1))+1 == world.rank()) {
                 std::cout << printCurrentThread() << "executing " << (*it2)->get_name() << std::endl;
-                (*it2)->execute(dictionary, masterComputer);
+                (*it2)->execute(dictionary, masterComputer, cheminPere);
                 std::cout << printCurrentThread() << "finished " << (*it2)->get_name() << std::endl;
             }
             currentRank++;

@@ -47,7 +47,7 @@ else (OPENMP_FOUND)
 endif (OPENMP_FOUND)
 
 # Detect Boost
-find_package(Boost REQUIRED mpi serialization)
+find_package(Boost COMPONENTS mpi serialization filesystem system REQUIRED)
 if (BOOST_FOUND)
     message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
     message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
