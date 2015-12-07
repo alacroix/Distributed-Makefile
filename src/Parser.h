@@ -9,6 +9,7 @@
 #include <set>
 #include <queue>
 #include <boost/algorithm/string.hpp>
+#include <omp.h>
 
 #include "Rule.h"
 #include "PathUtils.h"
