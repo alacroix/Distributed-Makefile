@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
     mpi::communicator world;
 
     double startT;
-    Parser *p = nullptr;
+    Parser *p = NULL;
 
     // get hostname table
     std::vector<std::string> hostnames;
@@ -60,8 +60,9 @@ int main(int argc, char **argv) {
     } else {
         Manager m;
         broadcast(world, m, 0);
-
-        m.execute(slaves);
+        std::stringstream adressMaster;
+        adressMaster << "root@" << hostnames[0];
+        m.execute(slaves, adressMaster.str().c_str());
     }
 
     if (world.rank() == 0) {
@@ -72,13 +73,16 @@ int main(int argc, char **argv) {
             std::cout << "master recoit : " << message << std::endl;
             std::vector<std::string> tokens;
             boost::split(tokens, message, boost::is_any_of(";"));
-            //Faire le scp
             int destinataire = atoi(tokens[0].c_str());
-
             if (tokens[1].compare("done") == 0) {
                 std::cout << "Process " << destinataire << " finish all his work" << std::endl;
                 numberDone++;
             } else if (tokens[1].compare("file") == 0) {
+                //Envoie le fichier
+                std::stringstream commandSCP;
+                commandSCP << "scp " << tokens[2] << " root@" << hostnames.at(destinataire) << ":";
+                std::cout << commandSCP.str() << std::endl;
+                system(commandSCP.str().c_str());
                 std::cout << "master envoit : OK à " << destinataire << std::endl;
                 std::string ok = "OK";
                 world.send(destinataire, 1, ok);

@@ -5,7 +5,7 @@ Rule::Rule() : name("N/A") {}
 Rule::Rule(std::string name, std::vector<std::string> cmd, std::vector<std::string> dependencies) :
         name(name), cmd(cmd), dependencies(dependencies), executed(false), toExecute(false) {}
 
-void Rule::execute(std::map<std::string, Rule*> dictionary) {
+void Rule::execute(std::map<std::string, Rule*> dictionary, std::string masterComputer) {
     mpi::communicator world;
     //Parcours des dépendances pour demander les fichiers
     for(std::vector<int>::size_type i = 0; i != dependencies.size(); i++) {
@@ -36,6 +36,13 @@ void Rule::execute(std::map<std::string, Rule*> dictionary) {
             system(cmd.at(i).c_str());
         }
     }
+    //Envoie de tous les fichiers
+    std::stringstream commandSCP;
+    commandSCP << "scp * " << masterComputer;
+    std::cout << commandSCP.str() << std::endl;
+    system(commandSCP.str().c_str());
+    //Suppression des fichiers
+    system("rm *");
     executed = true;
 }
 

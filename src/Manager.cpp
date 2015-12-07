@@ -48,6 +48,7 @@ void Manager::create_building() {
         building.push_back(floor);
     }
 
+    /*
     int i = 1;
     for (std::vector<std::vector<Rule *> >::iterator it1 = building.begin(); it1 != building.end(); ++it1) {
         std::cout << "etage " << i << std::endl;
@@ -57,9 +58,10 @@ void Manager::create_building() {
         std::cout << std::endl;
         i++;
     }
+    */
 }
 
-void Manager::execute(mpi::communicator slave) {
+void Manager::execute(mpi::communicator slave, std::string masterComputer) {
     mpi::communicator world;
 
     // for each floor
@@ -69,7 +71,7 @@ void Manager::execute(mpi::communicator slave) {
             // execute rule if it's our turn
             if ((currentRank % (world.size()-1))+1 == world.rank()) {
                 std::cout << printCurrentThread() << "executing " << (*it2)->get_name() << std::endl;
-                (*it2)->execute(dictionary);
+                (*it2)->execute(dictionary, masterComputer);
                 std::cout << printCurrentThread() << "finished " << (*it2)->get_name() << std::endl;
             }
             currentRank++;
