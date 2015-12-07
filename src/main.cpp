@@ -16,6 +16,15 @@ int main(int argc, char **argv) {
     double startT;
     Parser *p = nullptr;
 
+    // get hostname table
+    std::vector<std::string> hostnames;
+    std::string name = env.processor_name();
+    for (int i = 0; i < world.size(); i++) {
+        std::string other;
+        broadcast(world, (world.rank() == i ? name : other), i);
+        hostnames.push_back((world.rank() == i ? name : other));
+    }
+
     bool is_generator = (world.rank() != 0);
     mpi::communicator slaves = world.split((is_generator) ? 0 : 1);
     std::cout << "Nombre de slaves " << slaves.size() << std::endl;
