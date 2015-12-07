@@ -16,23 +16,23 @@ int main(int argc, char **argv) {
     double startT;
     Parser *p = nullptr;
 
-    // if master
-    if (world.rank() == 0) {
-        // timer
-        startT = omp_get_wtime();
-
-    // Check args number
-    if (argc < 2 || argc > 3) {
-        std::cerr << "usage: distributed_makefile <makefile> [target]" << std::endl;
-        exit(1);
-    }
-
     bool is_generator = (world.rank() != 0);
     mpi::communicator slaves = world.split((is_generator) ? 0 : 1);
     std::cout << "Nombre de slaves " << slaves.size() << std::endl;
 
     std::cout << "source : " << mpi::environment::processor_name() << std::endl;
     std::cout << "I am process " << world.rank() << " of " << world.size() << "." << std::endl;
+
+    // if master
+    if (world.rank() == 0) {
+        // timer
+        startT = omp_get_wtime();
+
+        // Check args number
+        if (argc < 2 || argc > 3) {
+            std::cerr << "usage: distributed_makefile <makefile> [target]" << std::endl;
+            exit(1);
+        }
 
         QueueDoable queue;
 
@@ -47,16 +47,13 @@ int main(int argc, char **argv) {
         m.create_building();
 
         broadcast(world, m, 0);
+
     } else {
         Manager m;
         broadcast(world, m, 0);
-    }
 
-    if (world.rank() != 0) {
         m.execute(slaves);
     }
-    delete p;
-
 
     if (world.rank() == 0) {
         int numberDone = 0;

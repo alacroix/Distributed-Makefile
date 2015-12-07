@@ -19,7 +19,7 @@ void Rule::execute(std::map<std::string, Rule*> dictionary) {
             std::cout << "esclave recoit " << message << std::endl;
             if (message.compare("OK") != 0) {
                 std::cout << dependencies.at(i) << " : Non recu" << std::endl;
-                exit;
+                exit(1);
             }
         }
     }
