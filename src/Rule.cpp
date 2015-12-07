@@ -48,7 +48,7 @@ void Rule::execute(std::map<std::string, Rule*> dictionary, std::string masterCo
     std::cout << commandSCP.str() << std::endl;
     system(commandSCP.str().c_str());
     //Suppression des fichiers
-    system("rm *");
+    //system("rm *");
     executed = true;
 }
 
