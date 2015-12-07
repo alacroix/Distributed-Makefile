@@ -6,6 +6,7 @@
 #include <omp.h>
 #include <set>
 #include <mpi.h>
+#include <boost/range/irange.hpp>
 
 #include "Rule.h"
 #include "PathUtils.h"
@@ -15,7 +16,7 @@ class Manager {
 public:
     Manager(std::string master_rule, std::map<std::string, Rule*> dictionary, QueueDoable *queueDoable, int nbrRules);
 
-    void execute();
+    void execute(mpi::communicator slave);
 private:
     std::string master_rule;
     std::map<std::string, Rule*> dictionary;
@@ -23,8 +24,6 @@ private:
     int nbrRules;
 
     int currentRank;
-    int numprocs, rank, namelen;
-    char processor_name[MPI_MAX_PROCESSOR_NAME];
 
     std::string printCurrentThread();
 

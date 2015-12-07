@@ -60,22 +60,28 @@ void Manager::create_building() {
     }
 }
 
-void Manager::execute() {
+void Manager::execute(mpi::communicator slave) {
     mpi::communicator world;
+
     // for each floor
     for (std::vector<std::vector<Rule*> >::iterator it1 = building.begin(); it1 != building.end(); ++it1) {
         // for each rule
         for (std::vector<Rule*>::iterator it2 = it1->begin(); it2 != it1->end(); ++it2) {
             // execute rule if it's our turn
-            if (currentRank % numprocs == rank) {
+            if ((currentRank % (world.size()-1))+1 == world.rank()) {
                 std::cout << printCurrentThread() << "executing " << (*it2)->get_name() << std::endl;
                 (*it2)->execute(dictionary);
                 std::cout << printCurrentThread() << "finished " << (*it2)->get_name() << std::endl;
             }
             currentRank++;
         }
-        world.barrier();
-        // wait all rules on the current floor to finish
-        //MPI_Barrier(MPI_COMM_WORLD);
+        slave.barrier();
     }
+
+    //Envoie d'un message pour dire que c'est finis
+    std::stringstream messageSend;
+    messageSend << world.rank() << ";done";
+    std::cout << "esclave rank " << world.rank() << " envoit " << messageSend.str() << std::endl;
+    world.send(0, 0, messageSend.str());
+
 }

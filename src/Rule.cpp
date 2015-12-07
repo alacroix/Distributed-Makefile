@@ -4,13 +4,12 @@ Rule::Rule(std::string name, std::vector<std::string> cmd, std::vector<std::stri
         name(name), cmd(cmd), dependencies(dependencies), executed(false), toExecute(false) {}
 
 void Rule::execute(std::map<std::string, Rule*> dictionary) {
-
     mpi::communicator world;
     //Parcours des dépendances pour demander les fichiers
     for(std::vector<int>::size_type i = 0; i != dependencies.size(); i++) {
         if (dictionary.find(dependencies.at(i)) != dictionary.end() || file_exists(dependencies.at(i))) {
             std::stringstream messageSend;
-            messageSend << world.rank() << ";" << dependencies.at(i);
+            messageSend << world.rank() << ";file;" << dependencies.at(i);
             std::cout << "esclave rank " << world.rank() << " envoit " << messageSend.str() << std::endl;
             world.send(0, 0, messageSend.str());
             std::string message;
