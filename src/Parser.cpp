@@ -40,7 +40,7 @@ void Parser::parseFile(std::string fileName) {
 
             // Store name and dependencies
             boost::split(tokens, line, boost::is_any_of(" :"));
-            #pragma omp parallel for shared(name, dependencies)
+        //    #pragma omp parallel for shared(name, dependencies)
             for (size_t i = 0; i < tokens.size(); i++) {
                 boost::trim(tokens[i]);
                 if (i == 0) {
