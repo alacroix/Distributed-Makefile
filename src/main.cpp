@@ -32,16 +32,16 @@ int main(int argc, char **argv) {
     std::cout << "source : " << mpi::environment::processor_name() << std::endl;
     std::cout << "I am process " << world.rank() << " of " << world.size() << "." << std::endl;
 
+    // Check args number
+    if (argc < 2 || argc > 3) {
+        std::cerr << "usage: distributed_makefile <makefile> [target]" << std::endl;
+        exit(1);
+    }
+
     // if master
     if (world.rank() == 0) {
         // timer
         startT = omp_get_wtime();
-
-        // Check args number
-        if (argc < 2 || argc > 3) {
-            std::cerr << "usage: distributed_makefile <makefile> [target]" << std::endl;
-            exit(1);
-        }
 
         QueueDoable queue;
 

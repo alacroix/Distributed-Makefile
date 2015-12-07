@@ -44,7 +44,7 @@ void Rule::execute(std::map<std::string, Rule*> dictionary, std::string masterCo
     }
     //Envoie de tous les fichiers
     std::stringstream commandSCP;
-    commandSCP << "sshpass -p \"admin\" scp -o StrictHostKeyChecking=no " << get_name() << " " << masterComputer << ":~";
+    commandSCP << "sshpass -p \"admin\" scp -o StrictHostKeyChecking=no " << get_name() << " " << masterComputer << ":~/distributed-makefile/test/premier/";
     std::cout << commandSCP.str() << std::endl;
     system(commandSCP.str().c_str());
     //Suppression des fichiers
