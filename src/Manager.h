@@ -33,7 +33,7 @@ public:
 
     Manager(std::string master_rule, std::map<std::string, Rule *> dictionary, QueueDoable *queueDoable);
 
-    void execute();
+    void execute(mpi::communicator slave);
     void create_building();
 private:
     std::string master_rule;

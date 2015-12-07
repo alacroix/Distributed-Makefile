@@ -9,8 +9,12 @@
 
 #include <boost/serialization/string.hpp>
 #include <boost/serialization/vector.hpp>
+#include <boost/mpi.hpp>
+#include <boost/mpi/communicator.hpp>
 
 #include "PathUtils.h"
+
+namespace mpi = boost::mpi;
 
 class Rule {
     friend class boost::serialization::access;
