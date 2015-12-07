@@ -24,7 +24,7 @@ void Rule::execute(std::map<std::string, Rule*> dictionary, std::string masterCo
         }
     }
 
-  //  #pragma omp for ordered
+    #pragma omp for ordered
     for(std::vector<int>::size_type i = 0; i < cmd.size(); i++) {
         std::string exec = cmd.at(i).substr(0, cmd.at(i).find(' '));
 
@@ -39,7 +39,7 @@ void Rule::execute(std::map<std::string, Rule*> dictionary, std::string masterCo
             toExec = cmd.at(i);
         }
 
-      //  #pragma omp ordered
+        #pragma omp ordered
         system(toExec.c_str());
     }
     //Envoie de tous les fichiers
