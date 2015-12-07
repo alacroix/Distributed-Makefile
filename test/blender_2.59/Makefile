@@ -1027,3 +1027,5 @@ cube_anim_59.tga : cube_anim.blend
 cube_anim_60.tga : cube_anim.blend
 	blender -b cube_anim.blend -o //cube_anim_#.tga -F TGA -f 60
 
+clean:
+	rm -rf *.tga *.jpg out.avi

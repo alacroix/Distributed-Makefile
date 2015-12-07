@@ -62,6 +62,9 @@ list20.txt: premier
 	premier `echo 19*200000000/20 |bc` `echo 20*200000000/20-1 |bc` > list20.txt
 
 premier: premier.c
-    gcc -o premier premier.c -lm
+	gcc -o premier premier.c -lm
+
+clean:
+	rm -f list* premier
 
 
