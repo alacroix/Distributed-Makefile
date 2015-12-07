@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
             } else if (tokens[1].compare("file") == 0) {
                 //Envoie le fichier
                 std::stringstream commandSCP;
-                commandSCP << "sshpass -p \"admin\" ssh -o StrictHostKeyChecking=no " << tokens[2] << " root@" << hostnames.at(destinataire) << ":";
+                commandSCP << "sshpass -p \"admin\" scp -o StrictHostKeyChecking=no " << tokens[2] << " root@" << hostnames.at(destinataire) << ":";
                 std::cout << commandSCP.str() << std::endl;
                 system(commandSCP.str().c_str());
                 std::cout << "master envoit : OK à " << destinataire << std::endl;
