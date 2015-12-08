@@ -1,14 +1,14 @@
 #include "Rule.h"
 
-Rule::Rule() : name("N/A") {}
+Rule::Rule() : name("N/A") { }
 
 Rule::Rule(std::string name, std::vector<std::string> cmd, std::vector<std::string> dependencies) :
-        name(name), cmd(cmd), dependencies(dependencies), executed(false), toExecute(false) {}
+        name(name), cmd(cmd), dependencies(dependencies), executed(false), toExecute(false) { }
 
-void Rule::execute(std::map<std::string, Rule*> dictionary, std::string masterComputer, std::string cheminPere) {
+void Rule::execute(std::map<std::string, Rule *> dictionary, std::string masterComputer, std::string cheminPere) {
     mpi::communicator world;
     //Parcours des dépendances pour demander les fichiers
-    for(std::vector<int>::size_type i = 0; i != dependencies.size(); i++) {
+    for (std::vector<int>::size_type i = 0; i != dependencies.size(); i++) {
         if (dictionary.find(dependencies.at(i)) != dictionary.end() || file_exists(dependencies.at(i))) {
             std::stringstream messageSend;
             messageSend << world.rank() << ";file;" << dependencies.at(i);
@@ -23,7 +23,7 @@ void Rule::execute(std::map<std::string, Rule*> dictionary, std::string masterCo
     }
 
     #pragma omp for ordered
-    for(std::vector<int>::size_type i = 0; i < cmd.size(); i++) {
+    for (std::vector<int>::size_type i = 0; i < cmd.size(); i++) {
         std::string exec = cmd.at(i).substr(0, cmd.at(i).find(' '));
 
         std::string toExec;
@@ -43,7 +43,8 @@ void Rule::execute(std::map<std::string, Rule*> dictionary, std::string masterCo
 
     //Envoi de tous les fichiers
     std::stringstream commandSCP;
-    commandSCP << "sshpass -p \"admin\" scp -o StrictHostKeyChecking=no " << get_name() << " " << masterComputer << ":" << cheminPere;
+    commandSCP << "sshpass -p \"admin\" scp -o StrictHostKeyChecking=no " << get_name() << " " << masterComputer <<
+    ":" << cheminPere;
     system(commandSCP.str().c_str());
     executed = true;
 }
@@ -61,12 +62,10 @@ std::vector<std::string> Rule::get_dependencies() {
 }
 
 void Rule::addParent(std::string pereName) {
-    //std::cout << name << " : Add pere : " << pereName << std::endl;
     this->parents.push_back(pereName);
 }
 
 void Rule::addChild(std::string childName) {
-    //std::cout << name << " : Add child : " << childName << std::endl;
     this->children.push_back(childName);
 }
 
@@ -75,10 +74,8 @@ std::vector<std::string> Rule::get_parents() {
 }
 
 void Rule::removeChild(std::string childName) {
-    for(std::vector<std::string>::iterator iter = children.begin(); iter != children.end(); ++iter )
-    {
-        if(childName.compare(*iter) == 0)
-        {
+    for (std::vector<std::string>::iterator iter = children.begin(); iter != children.end(); ++iter) {
+        if (childName.compare(*iter) == 0) {
             children.erase(iter);
             break;
         }
@@ -86,10 +83,8 @@ void Rule::removeChild(std::string childName) {
 }
 
 void Rule::removeParent(std::string parentName) {
-    for( std::vector<std::string>::iterator iter = parents.begin(); iter != parents.end(); ++iter )
-    {
-        if(parentName.compare(*iter) == 0)
-        {
+    for (std::vector<std::string>::iterator iter = parents.begin(); iter != parents.end(); ++iter) {
+        if (parentName.compare(*iter) == 0) {
             parents.erase(iter);
             break;
         }
@@ -97,7 +92,6 @@ void Rule::removeParent(std::string parentName) {
 }
 
 bool Rule::have_childs() {
-    //std::cout << "Nombre fils : " << childs.size() << std::endl;
     return children.size() != 0;
 }
 
