@@ -13,21 +13,22 @@ oarsub -I -l nodes=5,walltime=5:00 -t deploy
 kadeploy3 -f $OAR_NODE_FILE -e jessie-x64-big -k
 
 #Install findBoost sur tous les  noeuds
-apt-get install libboost-mpi-dev
-apt-get install libboost-filesystem-dev
-apt-get install sshpass
-mkdir distributed-makefile && cd distributed-makefile
-mkdir out
-passwd root
-#Mettre "admin" en mot de passe
+- apt-get install libboost-mpi-dev
+- apt-get install libboost-filesystem-dev
+- apt-get install sshpass
+- mkdir distributed-makefile && cd distributed-makefile
+- mkdir out
+###Mettre "admin" en mot de passe
+- passwd root
+
 
 #Sur le master
-#Configuration pour la connexion au net et clone
-export http_proxy=http://proxy:3128/ && export https_proxy=http://proxy:3128/
-git clone https://github.com/alacroix/distributed-makefile.git && cd distributed-makefile && git checkout iteratif_boostmpi && cmake CMakeLists.txt && make
+##Configuration pour la connexion au net et clone
+- export http_proxy=http://proxy:3128/ && export https_proxy=http://proxy:3128/
+- git clone https://github.com/alacroix/distributed-makefile.git && cd distributed-makefile && git checkout iteratif_boostmpi && cmake CMakeLists.txt && make
 
-#Sur le master - creation d'une clé ssh
-ssh-keygen -t dsa
+##Sur le master - creation d'une clé ssh
+- ssh-keygen -t dsa
 
 #Sur le frontend de Grenoble, on recupere la clé publique générée
 scp root@genepi-4:.ssh/id_dsa.pub authorized_keys2
