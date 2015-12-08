@@ -18,9 +18,7 @@ public:
 
     void pushDoable(std::string nomFile);
     std::string popDoable();
-    void printDoable();
     bool empty();
-    std::vector<std::string> getQueueDoable();
 private:
     //Pour gérer une file unique de nom de regle faisable
     std::vector<std::string> queueDoable;

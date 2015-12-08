@@ -4,7 +4,6 @@ Manager::Manager() {}
 
 Manager::Manager(std::string master_rule, std::map<std::string, Rule *> dictionary, QueueDoable *queueDoable) :
         master_rule(master_rule), dictionary(dictionary), queueDoable(queueDoable), currentRank(0) {
-    //create_building();
 }
 
 std::string Manager::printCurrentThread() {
@@ -47,18 +46,6 @@ void Manager::create_building() {
         }
         building.push_back(floor);
     }
-
-    /*
-    int i = 1;
-    for (std::vector<std::vector<Rule *> >::iterator it1 = building.begin(); it1 != building.end(); ++it1) {
-        std::cout << "etage " << i << std::endl;
-        for (std::vector<Rule *>::iterator it2 = it1->begin(); it2 != it1->end(); ++it2) {
-            std::cout << (*it2)->get_name() << "-";
-        }
-        std::cout << std::endl;
-        i++;
-    }
-    */
 }
 
 void Manager::execute(mpi::communicator slave, std::string masterComputer, std::string cheminPere) {
@@ -82,7 +69,6 @@ void Manager::execute(mpi::communicator slave, std::string masterComputer, std::
     //Envoie d'un message pour dire que c'est finis
     std::stringstream messageSend;
     messageSend << world.rank() << ";done";
-    std::cout << "esclave rank " << world.rank() << " envoit " << messageSend.str() << std::endl;
     world.send(0, 0, messageSend.str());
 
 }

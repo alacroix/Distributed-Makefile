@@ -24,7 +24,7 @@ class Rule {
         ar & name;
         ar & cmd;
         ar & dependencies;
-        ar & childs;
+        ar & children;
         ar & parents;
         ar & executed;
     }
@@ -45,19 +45,14 @@ public:
     void removeChild(std::string childName);
     void removeParent(std::string parentName);
 
-    void printRule();
-
     bool have_childs();
     bool have_parents();
     bool toExecute;
-    bool has_dependencies();
-    bool has_been_executed();
-    bool alreadyExists();
 private:
     std::string name;
     std::vector<std::string> cmd;
     std::vector<std::string> dependencies;
-    std::vector<std::string> childs;
+    std::vector<std::string> children;
     std::vector<std::string> parents;
     bool executed;
 };
